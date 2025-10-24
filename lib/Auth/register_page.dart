@@ -13,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class RegisterPage extends StatefulWidget {
   const RegisterPage({
     super.key,
-    this.apiEndpoint = 'http://192.168.1.134:8000/api/screen/v1/register',
+    this.apiEndpoint = 'http://192.168.1.148:8000/api/screen/v1/register',
     this.buttonLabel = 'Register',
     this.headerTitle = 'Device Registration',
     this.logoAsset = 'assets/logo/2.png', // update if different
