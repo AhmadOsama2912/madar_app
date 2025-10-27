@@ -12,7 +12,7 @@ void main() async {
 
   final prefs = await SharedPreferences.getInstance();
   final token = prefs.getString('token');
-  final base  = prefs.getString('base_origin') ?? 'http://192.168.1.148:8000';
+  final base  = prefs.getString('base_origin') ?? 'http://192.168.1.168:8000';
   final ws    = '${Uri.parse(base).scheme}://${Uri.parse(base).host}:8081';
 
   // Start realtime only if we have a token

@@ -2,7 +2,7 @@ name: madar_app
 description: "TV Box Application to manage Ads and content remotely."
 publish_to: "none"
 
-version: 1.0.0+1
+version: 1.0.9
 
 environment:
   sdk: ^3.8.1
@@ -23,6 +23,15 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.13.1   # ← add this
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/logo/14.png"  # ← your logo
+  adaptive_icon_background: "#0B1220"  # (Android 8+ background color, tweak if you want)
+  adaptive_icon_foreground: "assets/logo/14.png"
+  min_sdk_android: 21
 
 flutter:
   uses-material-design: true
