@@ -9,11 +9,12 @@ import 'package:madar_app/homepage.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../core/tv_dpad_utility.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({
     super.key,
-    this.apiEndpoint = 'http://192.168.1.168:8000/api/screen/v1/register',
+    this.apiEndpoint = 'http://192.168.1.124:8000/api/screen/v1/register',
     this.buttonLabel = 'Register',
     this.headerTitle = 'Device Registration',
     this.logoAsset = 'assets/logo/2.png', // update if different
@@ -28,7 +29,7 @@ class RegisterPage extends StatefulWidget {
   State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _RegisterPageState extends State<RegisterPage> with TvDpadUtility<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   final _claimCodeCtrl = TextEditingController();
 
@@ -273,7 +274,11 @@ class _RegisterPageState extends State<RegisterPage> {
     final double buttonHeight = (56 * scale).clamp(48, 72);
     final double logoWidth = (w * 0.18).clamp(120, 420);
 
-    return Scaffold(
+    return Focus(
+      autofocus: true,
+      focusNode: rootFocusNode,
+      onKey: handleDpadKey,
+      child: Scaffold(
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, _) {
@@ -370,6 +375,7 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ),
       backgroundColor: Colors.white,
+      ),
     );
   }
 

@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'core/tv_dpad_utility.dart';
 
 import 'core/realtime.dart'; // RealtimeManager + PlaylistSnapshot
 
@@ -16,7 +17,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with TvDpadUtility<HomePage> {
   // Realtime
   StreamSubscription<PlaylistSnapshot>? _rtSub;
   Timer? _debounce; // debounce rapid pushes
@@ -34,7 +35,7 @@ class _HomePageState extends State<HomePage> {
 
   // Device config
   String? _token;
-  String _baseOrigin = 'http://192.168.1.168:8000'; // fallback if not stored
+  String _baseOrigin = 'http://192.168.1.124:8000'; // fallback if not stored
   String? _contentVersion;
 
   @override
@@ -299,41 +300,46 @@ class _HomePageState extends State<HomePage> {
     final scale = (shortest / 720).clamp(0.75, 2.2);
     final logoSize = (mq.size.width * 0.22).clamp(140.0, 520.0);
 
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          if (_items.isEmpty)
-            Center(
-              child: Image.asset(
-                'assets/images/1.png',
-                width: logoSize,
-                fit: BoxFit.contain,
-              ),
-            )
-          else
-            _buildCurrentSlide(),
+    return Focus(
+      autofocus: true,
+      focusNode: rootFocusNode,
+      onKey: handleDpadKey,
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            if (_items.isEmpty)
+              Center(
+                child: Image.asset(
+                  'assets/images/1.png',
+                  width: logoSize,
+                  fit: BoxFit.contain,
+                ),
+              )
+            else
+              _buildCurrentSlide(),
 
-          // status chip (top-right)
-          // Positioned(
-          //   top: 20 * scale,
-          //   right: 20 * scale,
-          //   child: DecoratedBox(
-          //     decoration: BoxDecoration(
-          //       color: Colors.black54,
-          //       borderRadius: BorderRadius.circular(12),
-          //     ),
-          //     child: Padding(
-          //       padding: EdgeInsets.symmetric(horizontal: 12 * scale, vertical: 6 * scale),
-          //       child: Text(
-          //         _statusText(),
-          //         style: TextStyle(color: Colors.white, fontSize: (12 * scale).clamp(11, 18)),
-          //       ),
-          //     ),
-          //   ),
-          // ),
-        ],
+            // status chip (top-right)
+            // Positioned(
+            //   top: 20 * scale,
+            //   right: 20 * scale,
+            //   child: DecoratedBox(
+            //       decoration: BoxDecoration(
+            //         color: _statusColor(),
+            //         borderRadius: BorderRadius.circular(12),
+            //       ),
+            //       child: Padding(
+            //         padding: EdgeInsets.symmetric(horizontal: 12 * scale, vertical: 6 * scale),
+            //         child: Text(
+            //           _statusText(),
+            //           style: TextStyle(color: Colors.white, fontSize: (12 * scale).clamp(11, 18)),
+            //         ),
+            //       ),
+            //     ),
+            // ),
+          ],
+        ),
       ),
     );
   }
